@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F6F8FA;
+  --bg-tertiary: #F3F4F6;
+  --bg-input: #FFFFFF;
+  --bg-hover: #F3F4F6;
+  --bg-active: #E8F0FE;
+  --border-primary: #D0D7DE;
+  --border-secondary: #E5E7EB;
+  --text-primary: #1F2328;
+  --text-secondary: #656D76;
+  --text-muted: #8C959F;
+  --accent: #0969DA;
+  --accent-hover: #0550AE;
+  --danger: #CF222E;
+  --success: #1A7F37;
+  --warning: #9A6700;
+  --orange: #D84315;
+  --scrollbar-thumb: #D0D7DE;
+  --scrollbar-thumb-hover: #8C959F;
+}
+
+.dark {
+  --bg-primary: #0D1117;
+  --bg-secondary: #161B22;
+  --bg-tertiary: #1F2937;
+  --bg-input: #0D1117;
+  --bg-hover: #161B22;
+  --bg-active: #1F2937;
+  --border-primary: #21262D;
+  --border-secondary: #30363D;
+  --text-primary: #E6EDF3;
+  --text-secondary: #8B949E;
+  --text-muted: #484F58;
+  --accent: #58A6FF;
+  --accent-hover: #388BFD;
+  --danger: #F85149;
+  --success: #3FB950;
+  --warning: #D29922;
+  --orange: #F78166;
+  --scrollbar-thumb: #21262D;
+  --scrollbar-thumb-hover: #30363D;
+}
+
+body {
+  font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slide-up { animation: slide-up 0.4s ease-out; }
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-toast-in { animation: toast-in 0.3s ease-out; }
