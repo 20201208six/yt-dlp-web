@@ -3,7 +3,14 @@ import path from "path";
 import os from "os";
 import type { VideoInfo, FormatInfo } from "./types.js";
 
-const YT_DLP = "yt-dlp";
+const YT_DLP_CMD = process.env.YT_DLP_PATH || "python3";
+const YT_DLP_ARGS_PREFIX: string[] = (() => {
+  if (process.env.YT_DLP_PATH) {
+    return [];
+  }
+  return ["-m", "yt_dlp"];
+})();
+const YT_DLP_CWD = process.env.YT_DLP_CWD || "/workspace";
 const DEFAULT_DOWNLOAD_DIR = path.join(os.homedir(), "Downloads");
 
 // Track active processes for cleanup
@@ -14,8 +21,9 @@ const activeProcesses = new Map<string, ChildProcess>();
  */
 function execYtDlp(args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
-    const proc = spawn(YT_DLP, args, {
+    const proc = spawn(YT_DLP_CMD, [...YT_DLP_ARGS_PREFIX, ...args], {
       stdio: ["ignore", "pipe", "pipe"],
+      cwd: YT_DLP_CWD,
     });
 
     let stdout = "";
@@ -157,8 +165,9 @@ export function downloadVideo(
     url,
   ];
 
-  const proc = spawn(YT_DLP, args, {
+  const proc = spawn(YT_DLP_CMD, [...YT_DLP_ARGS_PREFIX, ...args], {
     stdio: ["ignore", "pipe", "pipe"],
+    cwd: YT_DLP_CWD,
   });
 
   activeProcesses.set(taskId, proc);
