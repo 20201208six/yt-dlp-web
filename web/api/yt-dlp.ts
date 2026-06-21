@@ -13,6 +13,19 @@ const YT_DLP_ARGS_PREFIX: string[] = (() => {
 const YT_DLP_CWD = process.env.YT_DLP_CWD || "/workspace";
 const DEFAULT_DOWNLOAD_DIR = path.join(os.homedir(), "Downloads");
 
+const SSL_FIX_ARGS = [
+  "--no-check-certificates",
+  "--prefer-insecure",
+];
+
+const SSL_ENV = {
+  ...process.env,
+  PYTHONHTTPSVERIFY: "0",
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt",
+  REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt",
+  CURL_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt",
+};
+
 // Track active processes for cleanup
 const activeProcesses = new Map<string, ChildProcess>();
 
@@ -21,9 +34,10 @@ const activeProcesses = new Map<string, ChildProcess>();
  */
 function execYtDlp(args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
-    const proc = spawn(YT_DLP_CMD, [...YT_DLP_ARGS_PREFIX, ...args], {
+    const proc = spawn(YT_DLP_CMD, [...YT_DLP_ARGS_PREFIX, ...SSL_FIX_ARGS, ...args], {
       stdio: ["ignore", "pipe", "pipe"],
       cwd: YT_DLP_CWD,
+      env: SSL_ENV,
     });
 
     let stdout = "";
@@ -165,9 +179,10 @@ export function downloadVideo(
     url,
   ];
 
-  const proc = spawn(YT_DLP_CMD, [...YT_DLP_ARGS_PREFIX, ...args], {
+  const proc = spawn(YT_DLP_CMD, [...YT_DLP_ARGS_PREFIX, ...SSL_FIX_ARGS, ...args], {
     stdio: ["ignore", "pipe", "pipe"],
     cwd: YT_DLP_CWD,
+    env: SSL_ENV,
   });
 
   activeProcesses.set(taskId, proc);
